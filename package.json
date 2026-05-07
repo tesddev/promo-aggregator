@@ -1,12 +1,16 @@
 {
-    "name": "promo-aggregator",
-    "private": true,
-    "workspaces": [
-        "packages/*",
-        "apps/*"
-    ],
-    "scripts": {
-        "dev:api": "yarn workspace api dev",
-        "dev:web": "yarn workspace web dev"
-    }
+  "name": "promo-aggregator",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:api": "yarn workspace api dev",
+    "dev:web": "yarn workspace web dev"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.59.1",
+    "@types/node": "^25.6.1"
+  }
 }
