@@ -1,59 +1,121 @@
 # Promo Aggregator
 
-Scrapes promotions from a single mall portal, persists them, and serves them
-via a typed REST API with a browsable UI.
+Scrape promotions from a shopping mall portal, store them in SQLite, and serve them through a clean typed REST API with a responsive frontend.
+
+## Features
+
+- Full-stack TypeScript monorepo
+- Playwright-powered scraper with polite delays
+- Normalized SQLite database (Brands + Promotions)
+- REST API with filtering, search, and pagination
+- Modern Next.js UI with "Group by Brand" view
+- Docker support
 
 ## Prerequisites
+
 - Node.js 20+
-- Docker + Docker Compose (optional, for containerized run)
+- Yarn (recommended) or npm
+- Docker + Docker Compose (optional)
 
-## Local setup (without Docker)
+## Local Setup (Recommended)
 
-1. Clone the repo
-   git clone https://github.com/tesddev/promo-aggregator.git
-   cd promo-aggregator
+### 1. Clone & Install
 
-2. Copy env file
-   cp .env.example .env
+```bash
+git clone https://github.com/tesddev/promo-aggregator.git
+cd promo-aggregator
+cp .env.example .env
+yarn install
+```
 
-3. Install dependencies
-   npm install
+### 2. Start Development Servers
 
-4. Start the API
-   npm run dev:api
+**Terminal 1** — Start the API:
+```bash
+yarn dev:api
+```
 
-5. In a second terminal, start the UI
-   npm run dev:web
+**Terminal 2** — Start the Frontend:
+```bash
+yarn dev:web
+```
 
-6. Trigger a scrape (in a third terminal)
-   curl -X POST http://localhost:4000/scrape
+### 3. Trigger Scrape
 
-7. Open the UI
-   http://localhost:3000
+```bash
+curl -X POST http://localhost:4000/scrape
+```
 
-## Local setup (with Docker)
+### 4. Open UI
 
-   cp .env.example .env
-   docker-compose up --build
+Go to: [http://localhost:3000](http://localhost:3000)
 
-Then trigger a scrape:
-   curl -X POST http://localhost:4000/scrape
+---
 
-## API endpoints
+## Docker Setup
 
-GET  /promotions          paginated list, supports ?search, ?brand, ?page, ?pageSize
-GET  /promotions/:id      single promotion
-GET  /brands              all brands with promotionCount
-POST /scrape              trigger a fresh scrape (synchronous, takes 2-5 min)
+```bash
+cp .env.example .env
+docker-compose up --build
+```
 
-## Environment variables
+Then trigger the scrape in another terminal:
+```bash
+curl -X POST http://localhost:4000/scrape
+```
 
-See .env.example. Key vars:
-- PORT            API port (default 4000)
-- DATABASE_PATH   Path to SQLite file (default ./data/promos.db)
-- SCRAPE_DELAY_MS Delay between scraper requests in ms (default 600)
+UI will be available at http://localhost:3000
 
-## Known limitations
-- Scraper reads page 1 of /sales only
-- CSS selectors may need updating if the site structure changes
-- POST /scrape is synchronous and blocks for the duration of the scrape
+## API Endpoints
+
+| Method | Endpoint               | Description                          |
+|--------|------------------------|--------------------------------------|
+| GET    | `/promotions`          | Paginated list (supports search, filters) |
+| GET    | `/promotions/:id`      | Get single promotion                 |
+| GET    | `/brands`              | List brands with promotion count     |
+| POST   | `/scrape`              | Trigger full scrape                  |
+
+**Query Parameters for `/promotions`**:
+- `search` — Search in promo name or brand
+- `brand` — Filter by brand name
+- `page` / `pageSize` — Pagination
+
+## Environment Variables
+
+See [`.env.example`](.env.example)
+
+| Variable            | Description                        | Default                     |
+|---------------------|------------------------------------|-----------------------------|
+| `PORT`              | API server port                    | 4000                        |
+| `DATABASE_PATH`     | Path to SQLite database            | `./data/promos.db`          |
+| `SCRAPE_DELAY_MS`   | Delay between requests (politeness)| 600                         |
+
+## Project Structure
+
+```
+promo-aggregator/
+├── packages/shared/     # Shared TypeScript types
+├── apps/api/            # Express + Playwright + SQLite
+├── apps/web/            # Next.js frontend
+├── DESIGN.md
+├── ASSUMPTIONS.md
+└── docker-compose.yml
+```
+
+## Known Limitations
+
+- Currently scrapes only the first page of `/sales`
+- Scrape is synchronous (blocks request for 2–5 minutes)
+- Selectors may need occasional updates if site structure changes
+
+## Future Improvements
+
+- Async scraping with job queue
+- Multi-mall support
+- Better date parsing
+- Image caching / proxy
+- Rate limiting & caching on API
+
+---
+
+**Made with ❤️ using TypeScript, Playwright, SQLite, Express, and Next.js**
