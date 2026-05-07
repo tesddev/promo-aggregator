@@ -11,6 +11,13 @@ Scrape promotions from a shopping mall portal, store them in SQLite, and serve t
 - Modern Next.js UI with "Group by Brand" view
 - Docker support
 
+## Previews
+
+<p align="center">
+  <img src="docs/screenshots/preview-flat.png" width="45%" alt="Flat View" />
+  <img src="docs/screenshots/preview-grouped.png" width="45%" alt="Grouped View" />
+</p>
+
 ## Prerequisites
 
 - Node.js 20+
