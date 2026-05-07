@@ -22,6 +22,7 @@ export interface Promotion {
     portalSource: string;
     scrapedAt: string;          // ISO datetime
     brandId: string;
+    brandName?: string; // Flattened from join in API
     brand?: Brand;
 }
 
