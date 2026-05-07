@@ -1,0 +1,12 @@
+{
+    "name": "promo-aggregator",
+    "private": true,
+    "workspaces": [
+        "packages/*",
+        "apps/*"
+    ],
+    "scripts": {
+        "dev:api": "yarn workspace api dev",
+        "dev:web": "yarn workspace web dev"
+    }
+}
