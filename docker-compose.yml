@@ -2,19 +2,19 @@ version: '3.8'
 services:
   api:
     build:
-      context: ./apps/api
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: apps/api/Dockerfile
     ports:
       - "4000:4000"
     volumes:
-      - ./apps/api/data:/app/data
+      - ./apps/api/data:/app/apps/api/data
     env_file:
       - .env
 
   web:
     build:
-      context: ./apps/web
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: apps/web/Dockerfile
     ports:
       - "3000:3000"
     depends_on:
