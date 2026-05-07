@@ -6,8 +6,8 @@
     "apps/*"
   ],
   "scripts": {
-    "dev:api": "yarn workspace api dev",
-    "dev:web": "yarn workspace web dev"
+    "dev:api": "npm run dev -w api",
+    "dev:web": "npm run dev -w web"
   },
   "devDependencies": {
     "@playwright/test": "^1.59.1",

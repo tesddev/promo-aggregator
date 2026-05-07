@@ -2,7 +2,7 @@
     "name": "api",
     "version": "1.0.0",
     "scripts": {
-        "dev": "tsx watch src/index.ts",
+        "dev": "ts-node-dev src/index.ts",
         "build": "tsc"
     },
     "dependencies": {
