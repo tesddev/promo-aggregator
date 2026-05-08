@@ -21,7 +21,7 @@ Scrape promotions from a shopping mall portal, store them in SQLite, and serve t
 ## Prerequisites
 
 - Node.js 20+
-- Yarn (recommended) or npm
+- npm
 - Docker + Docker Compose (optional)
 
 ## Local Setup (Recommended)
@@ -32,19 +32,19 @@ Scrape promotions from a shopping mall portal, store them in SQLite, and serve t
 git clone https://github.com/tesddev/promo-aggregator.git
 cd promo-aggregator
 cp .env.example .env
-yarn install
+npm install
 ```
 
 ### 2. Start Development Servers
 
 **Terminal 1** — Start the API:
 ```bash
-yarn dev:api
+npm run dev:api
 ```
 
 **Terminal 2** — Start the Frontend:
 ```bash
-yarn dev:web
+npm run dev:web
 ```
 
 ### 3. Trigger Scrape

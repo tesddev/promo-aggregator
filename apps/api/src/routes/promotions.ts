@@ -18,16 +18,45 @@ router.get('/', (req, res) => {
     if (brand) { query += ` AND b.name LIKE ?`; params.push(`%${brand}%`); }
 
     const total = (db.prepare(`SELECT COUNT(*) as count FROM (${query})`).get(...params) as { count: number }).count;
-    const data = db.prepare(`${query} LIMIT ? OFFSET ?`).all(...params, parseInt(pageSize), offset);
+    const data = db.prepare(`${query} LIMIT ? OFFSET ?`).all(...params, parseInt(pageSize), offset).map((p: any) => ({
+        ...p,
+        brand: p.brandId ? {
+            id: p.brandId,
+            name: p.brandName,
+            websiteUrl: p.websiteUrl,
+            hours: p.hours,
+            socialLinks: {
+                instagram: p.instagram,
+                facebook: p.facebook,
+                tiktok: p.tiktok,
+                x: p.x
+            }
+        } : undefined
+    }));
 
     res.json({ data, total, page: parseInt(page), pageSize: parseInt(pageSize) } as PaginatedResponse<Promotion>);
 });
 
 router.get('/:id', (req, res) => {
-    const row = db.prepare(`SELECT p.*, b.name as brandName, b.websiteUrl, b.hours, b.instagram, b.facebook, b.tiktok, b.x
+    const p: any = db.prepare(`SELECT p.*, b.name as brandName, b.websiteUrl, b.hours, b.instagram, b.facebook, b.tiktok, b.x
                           FROM promotions p LEFT JOIN brands b ON p.brandId = b.id WHERE p.id = ?`).get(req.params.id);
-    if (!row) return res.status(404).json({ error: 'Not found' });
-    res.json(row);
+    if (!p) return res.status(404).json({ error: 'Not found' });
+    const promotion = {
+        ...p,
+        brand: p.brandId ? {
+            id: p.brandId,
+            name: p.brandName,
+            websiteUrl: p.websiteUrl,
+            hours: p.hours,
+            socialLinks: {
+                instagram: p.instagram,
+                facebook: p.facebook,
+                tiktok: p.tiktok,
+                x: p.x
+            }
+        } : undefined
+    };
+    res.json(promotion);
 });
 
 export default router;
